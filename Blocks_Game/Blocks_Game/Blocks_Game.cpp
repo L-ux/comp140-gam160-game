@@ -7,9 +7,21 @@ int main(int argc, char * argv[])
 {
 	DisplayManager DispMan;
 	IOHandler IO;
-	DispMan.init();
-	while (true) { DispMan.render(); }
-    std::cout << "Hello World!\n"; 
-	std::cin;
+	DispMan.Init();
+	while (DispMan.checkRunning())
+	{
+		int increment = SDL_GetTicks(); 
+		if (increment % 1000 == 0) // every sec
+		{
+			std::cout << "BLIP!!!!" << std::endl;
+			DispMan.NextBlip();
+		}
+		if (increment % 20 == 0) // 25 FPS
+		{
+			DispMan.Events();
+			DispMan.Render();
+		}
+		
+	}
 	return 0;
 }
