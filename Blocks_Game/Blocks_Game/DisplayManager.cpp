@@ -23,34 +23,32 @@ void DisplayManager::Init()
 	setupShapes();
 }
 
-void DisplayManager::Render()
+void DisplayManager::RenderGame()
 {
 	SDL_SetRenderDrawColor(mainRend, 0, 0, 0, 255); // background colour
 	SDL_RenderClear(mainRend);
-
-	// draw time
+	// draw time :D
 
 	// make individual functions to draw these:
 	//	OUTLINE GRID
 	SDL_SetRenderDrawColor(mainRend, 255, 255, 255, 255);
-	SDL_RenderDrawRect(mainRend, &gridOutline);
+	SDL_RenderDrawRect(mainRend, &gridOutline); // OUTLINE DONE
 
 	//	CURRENTLY PLACED BLOCKS
 	//	BLOCK UR CURRENTLY PLACING
 	//	TIMER
 	SDL_RenderDrawRect(mainRend, &bigTimerBox);
 
-	std::cout << visibleBlips << std::endl;
 	for (int i = 0; i < visibleBlips; i++)
 	{
 		SDL_RenderFillRect(mainRend, &smallTimerSquares[i]);
 		SDL_RenderFillRect(mainRend, &smallTimerRects[i]);
-	}
+	} // TIMER DONE
 
 	//	SCORE
 	//	ANYTHING ELSE I THINK OF LATER
-	SDL_SetRenderDrawColor(mainRend, 0, 0, 255, 255);
-	SDL_RenderFillRect(mainRend, &rekt);
+	SDL_SetRenderDrawColor(mainRend, 0, 0, 255, 255); // test cube
+	SDL_RenderFillRect(mainRend, &rekt); // test cube
 
 
 	// end draw time
@@ -94,17 +92,17 @@ void DisplayManager::Events()
 
 void DisplayManager::setupShapes()
 {
-	rekt.x = 70;
+	rekt.x = 70; // test cube
 	rekt.y = 120;
 	rekt.w = 50;
 	rekt.h = 50;
 
-	gridOutline.x = 69;
+	gridOutline.x = 69; // outline grid
 	gridOutline.y = 119;
 	gridOutline.w = 402;
 	gridOutline.h = 402;
 	
-	bigTimerBox.x = 240;
+	bigTimerBox.x = 240; // timer box
 	bigTimerBox.y = 20;
 	bigTimerBox.w = 60;
 	bigTimerBox.h = 60;
@@ -138,11 +136,10 @@ void DisplayManager::setupShapes()
 		smallTimerRects[i].h = timerRects[i][3];
 	}
 	// timer all set up woo, ***not rendered here***
-	//TODO: Figure out why the timer is so clunky
 
 }
 
-void DisplayManager::nextBlip()
+void DisplayManager::NextBlip()
 {
 	visibleBlips--;
 	if (visibleBlips == 0)

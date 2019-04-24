@@ -9,10 +9,10 @@ public:
 	~DisplayManager();
 
 	void Init();
-	void Render();
+	void RenderGame();
 	void Events();
-	void nextBlip();
-	bool checkRunning() { return isRunning; }
+	void NextBlip();
+	bool CheckRunning() { return isRunning; }
 
 private:
 	SDL_Window* mainWindow;
@@ -23,6 +23,7 @@ private:
 
 	void setupShapes();
 	SDL_Rect rekt;
+	std::array<SDL_Rect, 8> subrekts;
 	SDL_Rect gridOutline;
 	SDL_Rect bigTimerBox;
 	std::array<SDL_Rect, 8> smallTimerSquares;
