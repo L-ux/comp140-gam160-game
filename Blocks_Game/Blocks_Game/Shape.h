@@ -1,17 +1,40 @@
 #pragma once
 
-struct Shape
+struct shapePart
 {
 public:
-	int pieces[8][2];
-	void setPieces(int set[8][2])
+	int x;
+	int y;
+	shapePart() : x(0), y(0) {}
+	shapePart(int a, int b) : x(a), y(b) {}
+	bool isEmpty()
 	{
-		for (int x = 0; x < 8; x++)
+		if (x == 0 && y == 0)
+			return true;
+		else
+			return false;
+	}
+};
+
+const shapePart EMPTYPIECE = shapePart(0, 0);
+
+class Shape
+{
+public:
+	shapePart pieces[8] = { EMPTYPIECE,EMPTYPIECE,EMPTYPIECE,EMPTYPIECE,EMPTYPIECE,EMPTYPIECE,EMPTYPIECE,EMPTYPIECE };
+
+
+	void setPieces(shapePart *recievedPieces, int size)
+	{
+		//pieces[1] = EMPTYPIECE;
+
+		//shapePart pcs[8] = recievedPtr;
+
+		for (int i = 0; i < size; i++)
 		{
-			for (int y = 0; y < 2; y++)
-			{
-				pieces[x][y] = set[x][y];
-			}
+			shapePart eh = recievedPieces[i];
+			pieces[i] = eh;
 		}
 	}
+
 };

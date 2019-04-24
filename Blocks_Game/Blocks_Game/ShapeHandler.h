@@ -9,9 +9,13 @@ public:
 	ShapeHandler();
 	~ShapeHandler();
 
-	Shape GetRandomShape() { return *allShapes[std::rand() % 9]; }
+	Shape GetRandomShape() 
+	{ 
+		int randNum = std::rand() % 9;
+		return allShapes[randNum]; 
+	}
 
 private:
-	Shape* allShapes[9];
+	Shape allShapes[9];
 };
 

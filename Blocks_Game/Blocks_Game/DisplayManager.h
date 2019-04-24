@@ -1,6 +1,8 @@
 #pragma once
 #include "SDL.h"
 #include <array>
+#include "ShapeHandler.h"
+#include "Constants.h"
 
 class DisplayManager
 {
@@ -12,14 +14,30 @@ public:
 	void RenderGame();
 	void Events();
 	void NextBlip();
+	void UpdateBlock();
 	bool CheckRunning() { return isRunning; }
 
 private:
 	SDL_Window* mainWindow;
 	SDL_Renderer* mainRend;
-	bool isRunning;
-	int visibleBlips = 7;
+	ShapeHandler SHandler;
 
+	bool isRunning;
+
+	int visibleBlips = 7;
+	int subRectsToRender;
+
+	double fRotation;
+	double fSliderH;
+	double fSliderV;
+	enum compassRotation
+	{
+		North, //default
+		East,
+		South,
+		West
+	};
+	compassRotation rotation = North;
 
 	void setupShapes();
 	SDL_Rect rekt;

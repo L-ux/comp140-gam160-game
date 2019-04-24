@@ -32,24 +32,29 @@ void DisplayManager::RenderGame()
 	// make individual functions to draw these:
 	//	OUTLINE GRID
 	SDL_SetRenderDrawColor(mainRend, 255, 255, 255, 255);
-	SDL_RenderDrawRect(mainRend, &gridOutline); // OUTLINE DONE
+	SDL_RenderDrawRect(mainRend, &gridOutline); // ---------- OUTLINE DONE ----------
 
 	//	CURRENTLY PLACED BLOCKS
 	//	BLOCK UR CURRENTLY PLACING
+	SDL_SetRenderDrawColor(mainRend, 0, 0, 255, 255); 
+	SDL_RenderFillRect(mainRend, &rekt);
+	for (int i = 0; i < subRectsToRender; i++)
+	{
+		SDL_RenderFillRect(mainRend, &subrekts[i]);
+	}
+
 	//	TIMER
+	SDL_SetRenderDrawColor(mainRend, 255, 255, 255, 255);
 	SDL_RenderDrawRect(mainRend, &bigTimerBox);
 
 	for (int i = 0; i < visibleBlips; i++)
 	{
 		SDL_RenderFillRect(mainRend, &smallTimerSquares[i]);
 		SDL_RenderFillRect(mainRend, &smallTimerRects[i]);
-	} // TIMER DONE
+	} // ---------- TIMER DONE ----------
 
 	//	SCORE
 	//	ANYTHING ELSE I THINK OF LATER
-	SDL_SetRenderDrawColor(mainRend, 0, 0, 255, 255); // test cube
-	SDL_RenderFillRect(mainRend, &rekt); // test cube
-
 
 	// end draw time
 	SDL_RenderPresent(mainRend);
@@ -83,6 +88,8 @@ void DisplayManager::Events()
 			{
 				rekt.x += 50;
 			}
+			UpdateBlock();
+			RenderGame();
 			break;
 		default:
 			break;
@@ -96,6 +103,7 @@ void DisplayManager::setupShapes()
 	rekt.y = 120;
 	rekt.w = 50;
 	rekt.h = 50;
+	UpdateBlock();
 
 	gridOutline.x = 69; // outline grid
 	gridOutline.y = 119;
@@ -148,3 +156,29 @@ void DisplayManager::NextBlip()
 		//TODO: Trigger event to signify forced end of turn
 	}
 }
+
+void DisplayManager::UpdateBlock()
+{
+	subRectsToRender = 0;
+	Shape cShape = SHandler.GetRandomShape();
+	if (rotation == North)
+	{
+		std::cout << "NORTH" << std::endl;
+		for (int i = 0; i < 8; i++)
+		{
+			shapePart currentPiece = cShape.pieces[i];
+			if (!currentPiece.isEmpty())
+			{
+				std::cout << "AHHHHHHHHHH" << std::endl;
+				subrekts[i].x = rekt.x + (50 * currentPiece.x);
+				subrekts[i].y = rekt.y + (50 * currentPiece.y);
+				subrekts[i].w = 50;
+				subrekts[i].h = 50;
+				subRectsToRender++;
+			}
+		}
+	}
+}
+
+
+// in the init and nextblip function - add shiz so next shape is loaded.

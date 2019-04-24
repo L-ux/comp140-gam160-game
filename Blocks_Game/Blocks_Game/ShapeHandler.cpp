@@ -11,50 +11,50 @@ ShapeHandler::ShapeHandler()
 
 		O
 	*/
-	int pieceOne[8][2] = { *EMPTYPIECE,*EMPTYPIECE,*EMPTYPIECE,*EMPTYPIECE,
-							*EMPTYPIECE,*EMPTYPIECE,*EMPTYPIECE,*EMPTYPIECE };
-	allShapes[0]->setPieces(pieceOne);
+	shapePart pieceOne[8] = { EMPTYPIECE,EMPTYPIECE,EMPTYPIECE,EMPTYPIECE,
+								EMPTYPIECE, EMPTYPIECE, EMPTYPIECE, EMPTYPIECE };
+	allShapes[0].setPieces(pieceOne, 8);
 
 	/* Piece 2
 
 		O X
 	*/
-	int pieceTwo[8][2] = { {1,0},*EMPTYPIECE,*EMPTYPIECE,*EMPTYPIECE,
-							*EMPTYPIECE,*EMPTYPIECE,*EMPTYPIECE,*EMPTYPIECE };
-	allShapes[1]->setPieces(pieceTwo);
+	shapePart pieceTwo[8] = { shapePart(1,0),EMPTYPIECE,EMPTYPIECE,EMPTYPIECE,
+							EMPTYPIECE,EMPTYPIECE,EMPTYPIECE,EMPTYPIECE };
+	allShapes[1].setPieces(pieceTwo, 8);
 
 	/* Piece 3
 
 		X O X
 	*/
-	int pieceThree[8][2] = { {1,0}, {-1,0},*EMPTYPIECE,*EMPTYPIECE,
-							*EMPTYPIECE,*EMPTYPIECE,*EMPTYPIECE,*EMPTYPIECE };
-	allShapes[2]->setPieces(pieceThree);
+	shapePart pieceThree[8] = { shapePart(1,0), shapePart(-1,0),EMPTYPIECE,EMPTYPIECE,
+							EMPTYPIECE,EMPTYPIECE,EMPTYPIECE,EMPTYPIECE };
+	allShapes[2].setPieces(pieceThree, 8);
 
 	/* Piece 4
 
 	X O X X
 	*/
-	int pieceFour[8][2] = { {1,0}, {2,0}, {-1,0},*EMPTYPIECE,
-							*EMPTYPIECE,*EMPTYPIECE,*EMPTYPIECE,*EMPTYPIECE };
-	allShapes[3]->setPieces(pieceFour);
+	shapePart pieceFour[8] = { shapePart(1,0), shapePart(2,0), shapePart(-1,0),EMPTYPIECE,
+							EMPTYPIECE,EMPTYPIECE,EMPTYPIECE,EMPTYPIECE };
+	allShapes[3].setPieces(pieceFour, 8);
 
 	/* Piece 5
 
 	X X O X X
 	*/
-	int pieceFive[8][2] = { {1,0}, {2,0}, {-1,0}, {-2, 0},
-							*EMPTYPIECE,*EMPTYPIECE,*EMPTYPIECE,*EMPTYPIECE };
-	allShapes[4]->setPieces(pieceFive);
+	shapePart pieceFive[8] = { shapePart(1,0), shapePart(2,0), shapePart(-1,0), shapePart(-2, 0),
+							EMPTYPIECE,EMPTYPIECE,EMPTYPIECE,EMPTYPIECE };
+	allShapes[4].setPieces(pieceFive, 8);
 
 	/* Piece 6
 
 	X
 	O X
 	*/
-	int pieceSix[8][2] = { {1,0}, {0,-1}, *EMPTYPIECE, *EMPTYPIECE,
-							*EMPTYPIECE,*EMPTYPIECE,*EMPTYPIECE,*EMPTYPIECE };
-	allShapes[5]->setPieces(pieceSix);
+	shapePart pieceSix[8] = { shapePart(1,0), shapePart(0,-1), EMPTYPIECE, EMPTYPIECE,
+							EMPTYPIECE,EMPTYPIECE,EMPTYPIECE,EMPTYPIECE };
+	allShapes[5].setPieces(pieceSix, 8);
 
 	/* Piece 7
 
@@ -62,18 +62,18 @@ ShapeHandler::ShapeHandler()
 		X
 		O X X
 	*/
-	int pieceSeven[8][2] = { {1,0}, {2,0}, {0,-1}, {0,-2},
-							*EMPTYPIECE,*EMPTYPIECE,*EMPTYPIECE,*EMPTYPIECE };
-	allShapes[6]->setPieces(pieceSeven);
+	shapePart pieceSeven[8] = { shapePart(1,0), shapePart(2,0), shapePart(0,-1), shapePart(0,-2),
+							EMPTYPIECE,EMPTYPIECE,EMPTYPIECE,EMPTYPIECE };
+	allShapes[6].setPieces(pieceSeven, 8);
 
 	/* Piece 8
 
 	X X
 	O X
 	*/
-	int pieceEight[8][2] = { {1,0}, {0,-1}, {1,-1}, *EMPTYPIECE,
-							*EMPTYPIECE,*EMPTYPIECE,*EMPTYPIECE,*EMPTYPIECE };
-	allShapes[7]->setPieces(pieceEight);
+	shapePart pieceEight[8] = { shapePart(1,0), shapePart(0,-1), shapePart(1,-1), EMPTYPIECE,
+							EMPTYPIECE,EMPTYPIECE,EMPTYPIECE,EMPTYPIECE };
+	allShapes[7].setPieces(pieceEight, 8);
 
 	/* Piece 9
 
@@ -81,9 +81,9 @@ ShapeHandler::ShapeHandler()
 	X O X
 	X X X
 	*/
-	int pieceNine[8][2] = { {1,0}, {1,1}, {0,1}, {-1,1},
-							{-1,0}, {-1,-1}, {0,-1}, {1, -1} };
-	allShapes[8]->setPieces(pieceNine);
+	shapePart pieceNine[8] = { shapePart(1,0), shapePart(1,1), shapePart(0,1), shapePart(-1,1),
+							shapePart(-1,0), shapePart(-1,-1), shapePart(0,-1), {1, -1} };
+	allShapes[8].setPieces(pieceNine, 8);
 
 }
 
