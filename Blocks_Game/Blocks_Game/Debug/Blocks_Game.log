@@ -1,7 +1,4 @@
-﻿  Blocks_Game.cpp
-  DisplayManager.cpp
-c:\users\joshua grillo\desktop\comp140-gam160-game\blocks_game\blocks_game\displaymanager.cpp(126): warning C4018: '<': signed/unsigned mismatch
-c:\users\joshua grillo\desktop\comp140-gam160-game\blocks_game\blocks_game\displaymanager.cpp(139): warning C4018: '<': signed/unsigned mismatch
-  ShapeHandler.cpp
-  Generating Code...
+﻿  DisplayManager.cpp
+c:\users\joshua grillo\desktop\comp140-gam160-game\blocks_game\blocks_game\displaymanager.cpp(179): warning C4018: '<': signed/unsigned mismatch
+c:\users\joshua grillo\desktop\comp140-gam160-game\blocks_game\blocks_game\displaymanager.cpp(192): warning C4018: '<': signed/unsigned mismatch
   Blocks_Game.vcxproj -> C:\Users\Joshua Grillo\Desktop\comp140-gam160-game\Blocks_Game\Debug\Blocks_Game.exe

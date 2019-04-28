@@ -12,6 +12,8 @@ public:
 
 	bool connect = false;
 
+	std::string update();
+
 	void close();
 
 private:

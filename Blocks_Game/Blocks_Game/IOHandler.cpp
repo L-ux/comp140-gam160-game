@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "IOHandler.h"
+#include <iostream>
 
 
 IOHandler::IOHandler()
@@ -36,4 +37,16 @@ void IOHandler::close()
 {
 	mySerial->flush();
 	mySerial->close();
+}
+
+std::string IOHandler::update()
+{
+	if (connect)
+	{
+		mySerial->write("U");
+		std::string updates = mySerial->readline();
+		return updates;
+	}
+
+	return "0000-0000-0000-0";
 }
