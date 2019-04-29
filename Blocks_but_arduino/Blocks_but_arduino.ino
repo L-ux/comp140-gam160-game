@@ -11,6 +11,7 @@ int encoderPriorState;
 
 #define buttonOne 6
 bool buttonPressed = false;
+bool buttonState = true;
 
 
 void setup() {
@@ -44,11 +45,12 @@ void loop()
   encoderPriorState = encoderState;
 
   // button Check
+
   if (digitalRead(buttonOne) == HIGH)
   {
     buttonPressed = true;
+    buttonState == false;
   }
-
 
 
   // Check for read/write
@@ -67,23 +69,11 @@ void loop()
       bigString = bigString + "-" + intToString(rotationCount);
       bigString = bigString + "-" + buttonPressed;
       Serial.println(bigString);
-      
-
-//      Serial.print(intToString(sliderOnePosition));
-//      Serial.print("-");
-//      Serial.print(intToString(sliderTwoPosition));
-//      Serial.print("-");
-//      Serial.print(intToString(rotationCount));
-//      Serial.print("-");
-//      Serial.println(buttonPressed);
-
-
       buttonPressed = false;
     }
+    
   }
 }
-
-
 String intToString(int num)
 {
   char buff[5];
