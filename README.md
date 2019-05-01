@@ -9,3 +9,6 @@ My game is not going to be awesome at all
 
 
 Repo link: https://github.com/L-ux/comp140-gam160-game
+
+
+I have been having MANY issues with source control, so I pray it works when zipped and unzipped too.
