@@ -17,6 +17,10 @@ public:
 	void NextBlip();
 	void UpdateBlock();
 	void TurnEnd();
+	void NewShape();
+	void scoreLine(int x, int y);
+	void rotateCW();
+	void rotateCCW();
 	bool CheckRunning() { return isRunning; }
 
 private:
@@ -29,6 +33,10 @@ private:
 
 	int visibleBlips = 7;
 	int subRectsToRender;
+
+	bool buttonNow = false;
+	bool buttonPrior = false;
+	bool buttonPressed = false;
 
 	double fRotation;
 	double fSliderH;
@@ -51,6 +59,15 @@ private:
 	std::array<SDL_Rect, 8> smallTimerSquares;
 	std::array<SDL_Rect, 8> smallTimerRects;
 
-	int grid[8][8][3];
+	int grid[8][8]; // x,y
+	// std::array<std::array<SDL_Rect, 8>, 8 > yeet;
+
+	int xMax;
+	int xMin;
+	int yMax;
+	int yMin;
+	
+	int multiplier = 1;
+	int score = 0;
 };
 

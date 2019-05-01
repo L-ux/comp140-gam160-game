@@ -20,6 +20,16 @@ void DisplayManager::Init()
 	isRunning = true;
 
 	setupShapes();
+
+	//initiliase grid i guess
+	for (int x = 0; x < 8; x++)
+	{
+		for (int y = 0; y < 8; y++)
+		{
+			grid[x][y] = 0;
+		}
+	}
+
 }
 
 void DisplayManager::RenderGame()
@@ -34,8 +44,36 @@ void DisplayManager::RenderGame()
 	SDL_RenderDrawRect(mainRend, &gridOutline); // ---------- OUTLINE DONE ----------
 
 	//	CURRENTLY PLACED BLOCKS
+	SDL_Rect tempGridRects;
+	tempGridRects.w = 50;
+	tempGridRects.h = 50;
+	for (int x = 0; x < 8; x++)
+	{
+		for (int y = 0; y < 8; y++)
+		{
+			int gridPoint = grid[x][y];
+			if (gridPoint != 0)
+			{
+				if (gridPoint == 1)
+					SDL_SetRenderDrawColor(mainRend, 0, 255, 0, 255);
+				else if (gridPoint == 2)
+					SDL_SetRenderDrawColor(mainRend, 255, 255, 0, 255);
+				else if (gridPoint == 3)
+					SDL_SetRenderDrawColor(mainRend, 255, 0, 0, 255);
+				else
+					isRunning = false;
+
+				tempGridRects.x = 70 + (x * 50);
+				tempGridRects.y = 120 + (y * 50);
+
+				SDL_RenderFillRect(mainRend, &tempGridRects);
+			}
+		}
+	}
+
+
 	//	BLOCK UR CURRENTLY PLACING
-	SDL_SetRenderDrawColor(mainRend, 0, 0, 255, 255); 
+	SDL_SetRenderDrawColor(mainRend, 0, 0, 255, 64); 
 	SDL_RenderFillRect(mainRend, &rekt);
 	for (int i = 0; i < subRectsToRender; i++)
 	{
@@ -77,8 +115,24 @@ void DisplayManager::Events()
 	int sliderOneRaw = std::stoi(s1);
 	int sliderTwoRaw = std::stoi(s2);
 	int encoderRotations = std::stoi(rt);
-	bool buttonPressed;
-	bt == "1" ? buttonPressed = true : buttonPressed = false;
+	
+	// // check for button press change
+
+	bt == "1" ? buttonNow = true : buttonNow = false;
+
+	bool diffCheck;
+	buttonNow != buttonPrior ? diffCheck = true : diffCheck = false;
+
+	if (diffCheck)
+	{
+		if (buttonNow)
+		{
+			buttonPressed = true;
+		}
+	}
+	
+	buttonPrior = buttonNow;
+
 
 	// bound the sliders to the grid segments
 	int sliderOneSegment = 0;
@@ -94,14 +148,29 @@ void DisplayManager::Events()
 		sliderTwoSegment++;
 	}
 
+	// lock the box to the bounds
+
+	if (sliderOneSegment > (7 - xMax))
+		sliderOneSegment = (7 - xMax);
+	else if (sliderOneSegment < -xMin)
+		sliderOneSegment = -xMin;
+
+	if (sliderTwoSegment > (7 - yMax))
+		sliderTwoSegment = (7 - yMax);
+	else if (sliderTwoSegment < -yMin)
+		sliderTwoSegment = -yMin;
+
 	// finally, move the shape :D
-	rekt.x = 70 + (sliderOneSegment * 50);
+	rekt.x = 70 + (sliderOneSegment* 50);
 	rekt.y = 120 + (sliderTwoSegment * 50);
+	
 
+	if (buttonPressed)
+	{
+		TurnEnd();
+	}
 
-	std::cout << sliderOneSegment << " " << sliderTwoSegment << " " << encoderRotations << " " << buttonPressed << std::endl;
-
-
+	buttonPressed = false;
 
 
 	if (SDL_PollEvent(&event)) {
@@ -112,36 +181,13 @@ void DisplayManager::Events()
 		case SDL_MOUSEBUTTONDOWN:
 			break;
 		case SDL_KEYDOWN:
-			int xChange;
-			int yChange;
-			if (event.key.keysym.sym == SDLK_w)
+			if (event.key.keysym.sym == SDLK_RIGHT)
 			{
-				rekt.y -= 50;
-				xChange = 0;
-				yChange = -50;
+				rotateCW();
 			}
-			else if (event.key.keysym.sym == SDLK_s)
+			if (event.key.keysym.sym == SDLK_LEFT)
 			{
-				rekt.y += 50;
-				xChange = 0;
-				yChange = 50;
-			}
-			else if (event.key.keysym.sym == SDLK_a)
-			{
-				rekt.x -= 50;
-				xChange = -50;
-				yChange = 0;
-			}
-			else if (event.key.keysym.sym == SDLK_d)
-			{
-				rekt.x += 50;
-				xChange = 50;
-				yChange = 0;
-			}
-			for (int i = 0; i < 8; i++)
-			{
-				subrekts[i].x += xChange;
-				subrekts[i].y += yChange;
+				rotateCCW();
 			}
 			break;
 		default:
@@ -152,7 +198,7 @@ void DisplayManager::Events()
 
 void DisplayManager::setupShapes()
 {
-	rekt.x = 70; // test cube
+	rekt.x = 70; // center cube
 	rekt.y = 120;
 	rekt.w = 50;
 	rekt.h = 50;
@@ -199,20 +245,6 @@ void DisplayManager::setupShapes()
 	// timer all set up woo, ***not rendered here***
 
 
-
-	//// big setup for game grid
-
-	//for (int x = 0; x < 8; x++)
-	//{
-	//	for (int y = 0; y < 8; y++)
-	//	{
-	//		for (int z = 0; z < 3; z++)
-	//		{
-	//			grid[x][y][z] = -1;
-	//		}
-	//	}
-	//}
-
 }
 
 void DisplayManager::NextBlip()
@@ -229,8 +261,11 @@ void DisplayManager::NextBlip()
 
 void DisplayManager::UpdateBlock()
 {
+	xMax = 0;
+	xMin = 0;
+	yMax = 0;
+	yMin = 0;
 	subRectsToRender = 0;
-	cShape = SHandler.GetRandomShape();
 	if (rotation == North)
 	{
 		for (int i = 0; i < 8; i++)
@@ -243,18 +278,127 @@ void DisplayManager::UpdateBlock()
 				subrekts[i].w = 50;
 				subrekts[i].h = 50;
 				subRectsToRender++;
+
+				if (currentPiece.x > xMax)
+					xMax = currentPiece.x;
+				else if (currentPiece.x < xMin)
+					xMin = currentPiece.x;
+
+				if (currentPiece.y > yMax)
+					yMax = currentPiece.y;
+				else if (currentPiece.y < yMin)
+					yMin = currentPiece.y;
 			}
 		}
 	}
 }
 
+void DisplayManager::NewShape()
+{
+	cShape = SHandler.GetRandomShape();
+}
 
-// in the init and nextblip function - add shiz so next shape is loaded.
 
 void DisplayManager::TurnEnd()
 {
-	// need to have the array sorted here
+	int grid_X = (rekt.x - 70) / 50;
+	int grid_Y = (rekt.y - 120) / 50;
 
 
+	//place piece
+	grid[grid_X][grid_Y]++;
+	for (int i = 0; i < 8; i++)
+	{
+		shapePart currentPiece = cShape.pieces[i];
+		if (!currentPiece.isEmpty())
+		{
+			grid[grid_X + currentPiece.x][grid_Y + currentPiece.y]++;
+		}
+	}
+
+	// now do the bigggg array checks
+	// horizontal(?) checks
+
+	for (int x = 0; x < 8; x++)
+	{
+		for (int y = 0; y < 8; y++)
+		{
+			if (grid[x][y] == 0)
+				break;
+			else if (grid[x][y] > 0 && y == 7)
+				scoreLine(x, -1);
+		}
+	}
+
+	for (int y = 0; y < 8; y++)
+	{
+		for (int x = 0; x < 8; x++)
+		{
+			if (grid[x][y] == 0)
+				break;
+			else if (grid[x][y] > 0 && x == 7)
+				scoreLine(-1, y);
+		}
+	}
+
+
+	multiplier = 1;
+	visibleBlips = 8;
+	NewShape();
+	UpdateBlock();
+	std::cout << score << std::endl;
+}
+
+void DisplayManager::scoreLine(int x, int y)
+{
+	if (x == -1) // the -1 recieved here means that the 'y' value is consitant
+	{
+		for (int q = 0; q < 8; q++)
+		{
+			grid[q][y]--;
+		}
+	}
+	else
+	{
+		for (int q = 0; q < 8; q++)
+		{
+			grid[x][q]--;
+		}
+	}
+	score += 100 * multiplier;
+	multiplier++;
+}
+
+void DisplayManager::rotateCW()
+{
+	for (int i = 0; i < 8; i++)
+	{
+		shapePart* currentPiece = &cShape.pieces[i];
+		if (!currentPiece->isEmpty())
+		{
+			int oldX = currentPiece->x;
+			int oldY = currentPiece->y;
+
+			currentPiece->x = -oldY;
+			currentPiece->y = oldX;
+		}
+	}
+	UpdateBlock();
+}
+
+void DisplayManager::rotateCCW()
+{
+	for (int i = 0; i < 8; i++)
+	{
+		shapePart *currentPiece = &cShape.pieces[i];
+		if (!currentPiece->isEmpty())
+		{
+			int oldX = currentPiece->x;
+			int oldY = currentPiece->y;
+
+			currentPiece->x = oldY;
+			currentPiece->y = -oldX;
+		}
+	}
 	UpdateBlock();
 }

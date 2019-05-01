@@ -48,5 +48,6 @@ std::string IOHandler::update()
 		return updates;
 	}
 
+	std::cout << "update fail" << std::endl;
 	return "0000-0000-0000-0";
 }

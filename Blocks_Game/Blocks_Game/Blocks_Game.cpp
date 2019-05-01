@@ -26,6 +26,7 @@ int main(int argc, char * argv[])
 		if (increment >= lastRenderTime + (TICKSPERSECOND / desiredFPS)) // 25 FPS
 		{
 			DispMan.Events();
+			DispMan.UpdateBlock();
 			DispMan.RenderGame();
 			lastRenderTime = increment;
 		}
